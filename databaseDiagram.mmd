@@ -1,0 +1,184 @@
+classDiagram
+direction BT
+class agencies {
+   integer user_id
+   text name
+   text banner_url
+   text logo_url
+   text address
+   text phone
+   integer id
+}
+class agency_analytics {
+   integer agency_id
+   date date
+   integer views
+   integer bookings
+   real revenue
+   integer id
+}
+class bookings {
+   integer user_id
+   integer service_id
+   timestamp booking_date
+   text status
+   integer id
+}
+class e_tickets {
+   integer booking_id
+   text ticket_code
+   text qr_code_url
+   timestamp issued_at
+   integer id
+}
+class messages {
+   integer sender_id
+   integer recipient_id
+   integer agency_id
+   text content
+   timestamp sent_at
+   text status
+   integer id
+}
+class notifications {
+   integer user_id
+   text type
+   text content
+   timestamp created_at
+   boolean is_read
+   integer id
+}
+class payment_methods {
+   integer user_id
+   text provider
+   text details
+   boolean is_default
+   timestamp created_at
+   integer id
+}
+class payments {
+   integer booking_id
+   real amount
+   timestamp payment_date
+   text status
+   integer id
+}
+class refund_disputes {
+   integer booking_id
+   integer payment_id
+   integer opened_by
+   text status
+   text reason
+   text customer_explanation
+   text agency_response
+   text admin_verdict
+   timestamp opened_at
+   timestamp resolved_at
+   integer resolved_by
+   integer id
+}
+class reviews {
+   integer user_id
+   integer service_id
+   boolean verified_purchase
+   integer rating
+   text comment
+   timestamp created_at
+   integer id
+}
+class service_availability {
+   integer service_id
+   date start_date
+   date end_date
+   integer capacity
+   integer remaining_spots
+   integer id
+}
+class service_categories {
+   text name
+   text description
+   integer id
+}
+class service_media {
+   integer service_id
+   text media_type
+   text url
+   boolean is_featured
+   text caption
+   timestamp created_at
+   integer id
+}
+class services {
+   integer agency_id
+   integer category_id
+   text title
+   real price
+   text location
+   integer duration
+   text description
+   text itinerary
+   text inclusions
+   text exclusions
+   text terms
+   integer id
+}
+class system_settings {
+   text value
+   text description
+   timestamp updated_at
+   integer updated_by
+   text key
+}
+class user_preferences {
+   text theme_preference
+   text notification_preferences
+   integer user_id
+}
+class user_saved_searches {
+   integer user_id
+   text query
+   text filters
+   timestamp created_at
+   integer request
+}
+class user_sessions {
+   integer user_id
+   text token
+   timestamp created_at
+   integer id
+}
+class users {
+   text username
+   text email
+   text password_hash
+   text role
+   text auth_provider
+   timestamp created_at
+   integer id
+}
+
+agencies  -->  users : "user_id to id"
+agency_analytics  -->  agencies : "agency_id to id"
+bookings  -->  services : "service_id to id"
+bookings  -->  users : "user_id to id"
+e_tickets  -->  bookings : "booking_id to id"
+messages  -->  agencies : "agency_id to id"
+messages  -->  users : "recipient_id to id"
+messages  -->  users : "sender_id to id"
+notifications  -->  users : "user_id to id"
+payment_methods  -->  users : "user_id to id"
+payments  -->  bookings : "booking_id to id"
+refund_disputes  -->  bookings : "booking_id to id"
+refund_disputes  -->  payments : "payment_id to id"
+refund_disputes  -->  users : "resolved_by to id"
+refund_disputes  -->  users : "opened_by to id"
+reviews  -->  services : "service_id to id"
+reviews  -->  users : "user_id to id"
+service_availability  -->  services : "service_id to id"
+service_media  -->  services : "service_id to id"
+services  -->  agencies : "agency_id to id"
+services  -->  service_categories : "category_id to id"
+system_settings  -->  users : "updated_by to id"
+user_preferences  -->  users : "user_id to id"
+user_saved_searches  -->  users : "user_id to id"
+user_sessions  -->  users : "user_id to id"

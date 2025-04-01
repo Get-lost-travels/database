@@ -1,0 +1,189 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype polyline
+
+class agencies {
+   user_id: integer
+   name: text
+   banner_url: text
+   logo_url: text
+   address: text
+   phone: text
+   id: integer
+}
+class agency_analytics {
+   agency_id: integer
+   date: date
+   views: integer
+   bookings: integer
+   revenue: real
+   id: integer
+}
+class bookings {
+   user_id: integer
+   service_id: integer
+   booking_date: timestamp
+   status: text
+   id: integer
+}
+class e_tickets {
+   booking_id: integer
+   ticket_code: text
+   qr_code_url: text
+   issued_at: timestamp
+   id: integer
+}
+class messages {
+   sender_id: integer
+   recipient_id: integer
+   agency_id: integer
+   content: text
+   sent_at: timestamp
+   status: text
+   id: integer
+}
+class notifications {
+   user_id: integer
+   type: text
+   content: text
+   created_at: timestamp
+   is_read: boolean
+   id: integer
+}
+class payment_methods {
+   user_id: integer
+   provider: text
+   details: text
+   is_default: boolean
+   created_at: timestamp
+   id: integer
+}
+class payments {
+   booking_id: integer
+   amount: real
+   payment_date: timestamp
+   status: text
+   id: integer
+}
+class refund_disputes {
+   booking_id: integer
+   payment_id: integer
+   opened_by: integer
+   status: text
+   reason: text
+   customer_explanation: text
+   agency_response: text
+   admin_verdict: text
+   opened_at: timestamp
+   resolved_at: timestamp
+   resolved_by: integer
+   id: integer
+}
+class reviews {
+   user_id: integer
+   service_id: integer
+   verified_purchase: boolean
+   rating: integer
+   comment: text
+   created_at: timestamp
+   id: integer
+}
+class service_availability {
+   service_id: integer
+   start_date: date
+   end_date: date
+   capacity: integer
+   remaining_spots: integer
+   id: integer
+}
+class service_categories {
+   name: text
+   description: text
+   id: integer
+}
+class service_media {
+   service_id: integer
+   media_type: text
+   url: text
+   is_featured: boolean
+   caption: text
+   created_at: timestamp
+   id: integer
+}
+class services {
+   agency_id: integer
+   category_id: integer
+   title: text
+   price: real
+   location: text
+   duration: integer
+   description: text
+   itinerary: text
+   inclusions: text
+   exclusions: text
+   terms: text
+   id: integer
+}
+class system_settings {
+   value: text
+   description: text
+   updated_at: timestamp
+   updated_by: integer
+   key: text
+}
+class user_preferences {
+   theme_preference: text
+   notification_preferences: text
+   user_id: integer
+}
+class user_saved_searches {
+   user_id: integer
+   query: text
+   filters: text
+   created_at: timestamp
+   request: integer
+}
+class user_sessions {
+   user_id: integer
+   token: text
+   created_at: timestamp
+   id: integer
+}
+class users {
+   username: text
+   email: text
+   password_hash: text
+   role: text
+   auth_provider: text
+   created_at: timestamp
+   id: integer
+}
+
+agencies              -[#595959,plain]-^  users                : "user_id:id"
+agency_analytics      -[#595959,plain]-^  agencies             : "agency_id:id"
+bookings              -[#595959,plain]-^  services             : "service_id:id"
+bookings              -[#595959,plain]-^  users                : "user_id:id"
+e_tickets             -[#595959,plain]-^  bookings             : "booking_id:id"
+messages              -[#595959,plain]-^  agencies             : "agency_id:id"
+messages              -[#595959,plain]-^  users                : "recipient_id:id"
+messages              -[#595959,plain]-^  users                : "sender_id:id"
+notifications         -[#595959,plain]-^  users                : "user_id:id"
+payment_methods       -[#595959,plain]-^  users                : "user_id:id"
+payments              -[#595959,plain]-^  bookings             : "booking_id:id"
+refund_disputes       -[#595959,plain]-^  bookings             : "booking_id:id"
+refund_disputes       -[#595959,plain]-^  payments             : "payment_id:id"
+refund_disputes       -[#595959,plain]-^  users                : "resolved_by:id"
+refund_disputes       -[#595959,plain]-^  users                : "opened_by:id"
+reviews               -[#595959,plain]-^  services             : "service_id:id"
+reviews               -[#595959,plain]-^  users                : "user_id:id"
+service_availability  -[#595959,plain]-^  services             : "service_id:id"
+service_media         -[#595959,plain]-^  services             : "service_id:id"
+services              -[#595959,plain]-^  agencies             : "agency_id:id"
+services              -[#595959,plain]-^  service_categories   : "category_id:id"
+system_settings       -[#595959,plain]-^  users                : "updated_by:id"
+user_preferences      -[#595959,plain]-^  users                : "user_id:id"
+user_saved_searches   -[#595959,plain]-^  users                : "user_id:id"
+user_sessions         -[#595959,plain]-^  users                : "user_id:id"
+@enduml
